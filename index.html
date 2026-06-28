@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNY Mellon | Guardian & Mover of Global Financial Infrastructure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #050C1A;
+            --bg-card: rgba(13, 27, 42, 0.7);
+            --primary-gold: #D4AF37;
+            --light-gold: #F3E5AB;
+            --text-pure: #FFFFFF;
+            --text-muted: #A0AEC0;
+            --accent-cyan: #00F2FE;
+            --border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-pure);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 优雅流星动态背景 Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 高级通栏导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 12, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 6%;
+            background: rgba(5, 12, 26, 0.95);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--text-pure) 30%, var(--primary-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-gold);
+        }
+
+        /* 12国语言极致切换器 */
+        .lang-selector {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--light-gold);
+            transition: all 0.3s;
+        }
+
+        .lang-selector:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--primary-gold);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 110%;
+            right: 0;
+            width: 220px;
+            background: #0B1528;
+            border: 1px solid var(--primary-gold);
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            display: none;
+            grid-template-columns: 1fr;
+            padding: 8px 0;
+            z-index: 2000;
+        }
+
+        .lang-dropdown.show {
+            display: grid;
+        }
+
+        .lang-option {
+            padding: 10px 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .lang-option:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary-gold);
+            padding-left: 25px;
+        }
+
+        /* Hero 顶级门面场景 */
+        .hero-section {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            padding: 120px 8% 60px 8%;
+            position: relative;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-badge {
+            border: 1px solid var(--primary-gold);
+            padding: 6px 16px;
+            border-radius: 50px;
+            width: fit-content;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-gold);
+            margin-bottom: 25px;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 25px;
+            max-width: 900px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            color: var(--primary-gold);
+            font-family: 'Cinzel', serif;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        /* 镶嵌高管照片的高级右侧名片容器 */
+        .hero-profile-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, rgba(13, 27, 42, 0.8) 0%, rgba(5, 12, 26, 0.9) 100%);
+            border: 1px solid var(--primary-gold);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.1);
+            width: 100%;
+            max-width: 380px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.25);
+        }
+
+        .profile-img-wrapper {
+            width: 100%;
+            height: 420px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 18px;
+            background: #030812;
+        }
+
+        .profile-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .profile-info {
+            text-align: center;
+        }
+
+        .profile-name {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-pure);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .profile-title {
+            font-size: 12px;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* 核心宏观数据展示 */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+        }
+
+        .stat-item h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* 通用章节点美学 */
+        .section-container {
+            padding: 100px 8%;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-header span {
+            font-size: 12px;
+            color: var(--primary-gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--primary-gold);
+        }
+
+        /* 历史轴卡片 */
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .history-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .history-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.1);
+        }
+
+        .history-year {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-card h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-pure);
+        }
+
+        .history-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* 主营业务板块群 */
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+        }
+
+        .business-card {
+            background: linear-gradient(180deg, rgba(13,27,42,0.4) 0%, rgba(5,12,26,0.9) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 45px 35px;
+            transition: all 0.4s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .business-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 40px rgba(0, 242, 254, 0.08);
+        }
+
+        .biz-icon {
+            font-size: 32px;
+            color: var(--primary-gold);
+            margin-bottom: 30px;
+        }
+
+        .business-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        .biz-sub-item {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .biz-sub-item h5 {
+            color: var(--light-gold);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .biz-sub-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* 未来计划板块 */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .future-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .future-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-gold);
+        }
+
+        .future-card.cyan::before {
+            background: var(--accent-cyan);
+        }
+
+        .future-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-pure);
+        }
+
+        .future-card ul {
+            list-style: none;
+        }
+
+        .future-card li {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .future-card li strong {
+            color: var(--light-gold);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* 宏观愿景大尾部 */
+        .vision-statement {
+            background: radial-gradient(circle at center, rgba(212,175,55,0.1) 0%, transparent 70%);
+            text-align: center;
+            padding: 100px 15%;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .vision-statement i {
+            font-size: 40px;
+            color: var(--primary-gold);
+            margin-bottom: 30px;
+        }
+
+        .vision-statement p {
+            font-size: 22px;
+            font-family: 'Cinzel', serif;
+            line-height: 1.8;
+            color: var(--light-gold);
+            font-weight: 500;
+        }
+
+        footer {
+            background: #030812;
+            padding: 40px 8%;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #4A5568;
+            font-size: 13px;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1024px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 140px;
+            }
+            .hero-badge, .stat-grid {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .history-grid, .business-grid, .future-grid {
+                grid-template-columns: 1fr;
+            }
+            header nav {
+                display: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header id="main-header">
+        <div class="logo-area">
+            <span class="logo-text">BNY MELLON</span>
+        </div>
+        <nav>
+            <a href="#hero" class="active" id="nav-home">Home</a>
+            <a href="#history" id="nav-history">History</a>
+            <a href="#business" id="nav-business">Businesses</a>
+            <a href="#future" id="nav-future">Future Strategy</a>
+            
+            <div class="lang-selector" onclick="toggleLangDropdown(event)">
+                <i class="fa-solid fa-globe"></i>
+                <span id="current-lang">English</span>
+                <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" onclick="changeLang('en')">English</div>
+                    <div class="lang-option" onclick="changeLang('es')">Español</div>
+                    <div class="lang-option" onclick="changeLang('zh')">简体中文</div>
+                    <div class="lang-option" onclick="changeLang('pt')">Português</div>
+                    <div class="lang-option" onclick="changeLang('fr')">Français</div>
+                    <div class="lang-option" onclick="changeLang('de')">Deutsch</div>
+                    <div class="lang-option" onclick="changeLang('it')">Italiano</div>
+                    <div class="lang-option" onclick="changeLang('ja')">日本語</div>
+                    <div class="lang-option" onclick="changeLang('ko')">한국어</div>
+                    <div class="lang-option" onclick="changeLang('ru')">Русский</div>
+                    <div class="lang-option" onclick="changeLang('ar')">العربية</div>
+                    <div class="lang-option" onclick="changeLang('zh_hk')">繁體中文 (香港)</div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge" id="hero-badge">SINCE 1784 | THE BANK OF BANKS</div>
+            <h1 class="hero-title" id="hero-title">
+                Welcome to BNY Mellon<br>
+                <span>Guardian & Mover of Global Financial Infrastructure</span>
+            </h1>
+            <p class="hero-desc" id="hero-desc">
+                In the financial world, I am often called the 'Bank of Banks' or the 'Invisible Backbone of Institutions'. I am not a retail bank; I guard and power the infrastructure of global financial markets.
+            </p>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <h3 id="stat-1">$50T</h3>
+                    <p id="stat-1-desc">Assets Under Custody and/or Administration</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="stat-2">240+</h3>
+                    <p id="stat-2-desc">Years of Unrivaled Financial Trust</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="stat-3">Top 1</h3>
+                    <p id="stat-3-desc">One of the Largest Custody Banks Globally</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-profile-container">
+            <div class="profile-card">
+                <div class="profile-img-wrapper">
+                    <img src="my-avatar.jpg" alt="Connor Tadhg Patel">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name" id="prof-name">Connor Tadhg Patel</div>
+                    <div class="profile-title" id="prof-title">Regional Manager for Mexico & South America</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="history">
+        <div class="section-header">
+            <span id="h-meta">Heritage</span>
+            <h2 id="h-title">Our Origin & Historical Context</h2>
+        </div>
+        <div class="history-grid">
+            <div class="history-card">
+                <div class="history-year">1784 <i class="fa-solid fa-scroll"></i></div>
+                <h4 id="hist-1-t">Founding Father's Lineage</h4>
+                <p id="hist-1-d">Founded in 1784 by Alexander Hamilton, the first Secretary of the Treasury. We are the oldest bank in the United States.</p>
+            </div>
+            <div class="history-card">
+                <div class="history-year">2007 <i class="fa-solid fa-code-merge"></i></div>
+                <h4 id="hist-2-t">The Powerhouse Merger</h4>
+                <p id="hist-2-d">Modern BNY Mellon was forged in 2007 through the monumental merger of The Bank of New York and Mellon Financial.</p>
+            </div>
+            <div class="history-card">
+                <div class="history-year">240Y+ <i class="fa-solid fa-shield-halved"></i></div>
+                <h4 id="hist-3-t">Centuries of Resilience</h4>
+                <p id="hist-3-d">Surviving the Revolutionary War, the Great Depression, and the 2008 financial crisis, we stand as the ultimate safe haven for sovereign funds.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="business">
+        <div class="section-header">
+            <span id="b-meta">Core Business</span>
+            <h2 id="b-title">Our Main Businesses & Triple Pillars</h2>
+        </div>
+        <div class="business-grid">
+            <div class="business-card">
+                <div>
+                    <div class="biz-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3 id="biz-1-title">Securities Services & Custodial Banking</h3>
+                    <p style="font-size:14px; color:var(--text-muted);" id="biz-1-desc">When global mega-funds and governments purchase billions, they rely on our elite security and technological infrastructure.</p>
+                </div>
+                <div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-1-s1-t">Global Custody</h5>
+                        <p id="biz-1-s1-d">Delivering institutional clearing, settlement, safekeeping, and asset accounting services.</p>
+                    </div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-1-s2-t">Triparty Repo & Collateral Management</h5>
+                        <p id="biz-1-s2-d">Playing a critical role in the US Treasury market ensuring secure liquidity transmission.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="business-card">
+                <div>
+                    <div class="biz-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3 id="biz-2-title">Market and Wealth Services</h3>
+                    <p style="font-size:14px; color:var(--text-muted);" id="biz-2-desc">Ensuring capital flows smoothly through the global financial ecosystem with total structural efficiency.</p>
+                </div>
+                <div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-2-s1-t">Pershing Clearing</h5>
+                        <p id="biz-2-s1-d">The top clearing platform providing deep backend technology to thousands of financial advisers.</p>
+                    </div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-2-s2-t">Treasury Services</h5>
+                        <p id="biz-2-s2-d">Enabling global enterprises to perform multi-currency global payments and high-tier cash management.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="business-card">
+                <div>
+                    <div class="biz-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h3 id="biz-3-title">Investment & Wealth Management</h3>
+                    <p style="font-size:14px; color:var(--text-muted);" id="biz-3-desc">We don't just protect assets; we leverage institutional intelligence to grow global portfolios.</p>
+                </div>
+                <div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-3-s1-t">Multi-Boutique Model</h5>
+                        <p id="biz-3-s1-d">Housing world-class investment firms like Mellon and Dreyfus to offer bespoke multi-asset strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="future">
+        <div class="section-header">
+            <span id="f-meta">Future Blueprint</span>
+            <h2 id="f-title">Future Plans & Strategic Focus (2026)</h2>
+        </div>
+        <div class="future-grid">
+            <div class="future-card">
+                <div class="future-tag"><i class="fa-solid fa-rocket" style="color:var(--primary-gold)"></i> <span id="f-c1-t">AI as a Super Enabler</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c1-s1-t">Predictive Trade Analytics</strong>
+                        <span id="f-c1-s1-d">Utilizing patented AI to analyze global trade patterns, mitigating operational settlement risk dynamically.</span>
+                    </li>
+                    <li>
+                        <strong id="f-c1-s2-t">Efficiency Revolution</strong>
+                        <span id="f-c1-s2-d">Targeting a 30% pre-tax margin in Securities Services in the medium term via advanced automated AI processing.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="future-card cyan">
+                <div class="future-tag"><i class="fa-solid fa-cubes" style="color:var(--accent-cyan)"></i> <span id="f-c2-t">Digital Assets & Tokenization</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c2-s1-t">Real World Asset (RWA) Tokenization</strong>
+                        <span id="f-c2-s1-d">Pioneering the tokenization of traditional assets to dramatically improve global market liquidity.</span>
+                    </li>
+                    <li>
+                        <strong id="f-c2-s2-t">7x24x365 Non-stop Operations</strong>
+                        <span id="f-c2-s2-d">Re-architecting systems to support instantaneous, uninterrupted global capital and collateral mobilization.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="future-card cyan">
+                <div class="future-tag"><i class="fa-solid fa-bolt" style="color:var(--accent-cyan)"></i> <span id="f-c3-t">Central Clearing & T+1 Extension</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c3-s1-t">Intraday Liquidity Management</strong>
+                        <span id="f-c3-s1-d">Helping institutional clients navigate strict central clearing mandates and accelerated settlement windows.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="future-card">
+                <div class="future-tag"><i class="fa-solid fa-coins" style="color:var(--primary-gold)"></i> <span id="f-c4-t">High-Quality Fee-Driven Growth</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c4-s1-t">Superior Capital Returns</strong>
+                        <span id="f-c4-s1-d">Deploying significant dividend increases and share buybacks backed by strong SCB capital positions.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="vision-statement">
+        <i class="fa-solid fa-monument"></i>
+        <p id="final-vision">
+            "I am not just a 240-year-old Wall Street icon, but a global fintech infrastructure powerhouse disguised as a bank. My future anchors on Hamilton's elite risk culture while harnessing AI and DLT to rule global financial rails."
+        </p>
+    </section>
+
+    <footer>
+        <div>© 2026 BNY Mellon. All Infrastructure Secured</div>
+        <div></div>
+    </footer>
+
+    <script>
+        // 12国核心文案词典数据库
+        const i18nData = {
+            zh: {
+                navHome: "首页", navHistory: "历史起源", navBusiness: "核心主营", navFuture: "未来战略", currentLangName: "简体中文",
+                heroTitle: "您好！欢迎来到纽约梅隆银行<br><span>全球金融基础设施的守护者与驱动者</span>",
+                heroDesc: "在金融界，大家常把我称作“银行的银行”或“机构的隐形脊梁”。我不是那种开在街头巷尾、办理个人房贷或信用卡的传统零售银行；我是全球金融基础设施的守护者和驱动者。",
+                stat1Desc: "管理、移动与保护资产规模", stat2Desc: "横跨世纪的信用沉淀 (年)", stat3Desc: "全球最大资管与托管机构之一",
+                profName: "Connor Tadhg Patel", profTitle: "纽约梅隆银行 墨西哥及南美洲区域经理",
+                hMeta: "Heritage", hTitle: "我的诞生与历史背景",
+                hist1T: "开国元勋的血统", hist1D: "由美国开国元勋、第一任财政部长亚历山大·汉密尔顿亲自创立。我是美国历史最悠久的银行。",
+                hist2T: "双雄强强合并", hist2D: "现代的我，是由纽约银行与梅隆金融公司在 2007 年强强联手合并而成的时代巨擘。",
+                hist3T: "跨越世纪的韧性", hist3D: "从独立战争、大萧条到全球金融海啸，我始终保持坚如磐石的信用，成为全球主权基金与顶级机构最信赖的避风港。",
+                bMeta: "Core Business", bTitle: "我的主营业务与三大支柱",
+                biz1Title: "资产服务与全球托管", biz1Desc: "当全球大型基金、养老金、政府机构购买千亿资产时，我为其提供足够安全与技术强大的底层支持。",
+                biz1S1T: "全球托管", biz1S1D: "提供高度自动化的清算、结算、资产保管和会计服务。",
+                biz1S2T: "三方回购与抵押品管理", biz1S2D: "在美国国债和回购市场中承担核心第三方清算角色，保障市场流动性安全传导。",
+                biz2Title: "市场与财富服务", biz2Desc: "专注于全球金融体系中资金的高效周转，保障交易生态全天候顺畅无阻。",
+                biz2S1T: "Pershing 清算业务", biz2S1D: "全美顶尖的财富管理外包平台，为数千家独立理财顾问、券商提供底层清算。",
+                biz2S2T: "财政与库务服务", biz2S2D: "助力全球机构开展高效的跨境大额付款、全方位现金管理及外汇清结算。",
+                biz3Title: "投资与财富管理", biz3Desc: "不仅保管资产，更通过卓越的智库团队与前沿策略，协助全球精英机构打理财富。",
+                biz3S1T: "多精品店模式", biz3S1D: "旗下汇聚 Mellon、Dreyfus 等垂直顶尖投研机构，提供涵盖主动权益、指数化及固收的定制方案。",
+                fMeta: "Future Blueprint", fTitle: "未来计划与战略重点 (2026)",
+                fC1T: "AI 驱动的“超级催化剂”", fC1S1T: "预测性贸易分析", fC1S1D: "借助专利 AI 技术，在结算失败发生前提前预测高风险交易，大幅降低系统操作风险。",
+                fC1S2T: "效率革命", fC1S2D: "通过底层 AI 优化流程，目标在中期内将证券服务板块的税前利润率提升至 30%。",
+                fC2T: "数字化转型与代币化", fC2S1T: "真实世界资产 (RWA) 代币化", fC2S1D: "探索将传统资产与负债进行代币化，提高全球市场流动性与即时清算效率。",
+                fC2S2T: "7x24x365 全天候运营", fC2S2D: "重构底层架构，支持零闭市、无缝即时的跨国资产流动与全球抵押品高效调拨。",
+                fC3T: "国债集中清算与 T+1 延展", fC3S1T: "日內流动性强化", fC3S1D: "积极应对美债集中清算法规要求，协助全球客户提高抵押品的可移动性与日内流转速度。",
+                fC4T: "高质量 Fee-Driven 增长", fC4S1T: "资本回报跃升", fC4S1D: "得益于低 SCB 要求，持续推进极具竞争力的红利分派计划并深度聚焦费率驱动型的高粘性稳健收入。",
+                finalVision: "“我不仅是一家历经 240 多年风雨的华尔街老牌银行，更是一家伪装成银行的‘全球金融科技基础设施巨头’。我的未来，是左手握着亚历山大·汉密尔顿传承下来的顶级风控与信任，右手紧握 AI 与区块链技术，继续在全球金融生态中扮演那块最不可或缺的压舱石。”"
+            },
+            en: {
+                navHome: "Home", navHistory: "History", navBusiness: "Businesses", navFuture: "Future Strategy", currentLangName: "English",
+                heroTitle: "Welcome to BNY Mellon<br><span>Guardian & Mover of Global Financial Infrastructure</span>",
+                heroDesc: "In the financial world, I am often called the 'Bank of Banks' or the 'Invisible Backbone of Institutions'. I am not a retail bank; I guard and power the infrastructure of global financial markets.",
+                stat1Desc: "Assets Under Custody and/or Administration", stat2Desc: "Years of Unrivaled Financial Trust", stat3Desc: "One of the Largest Custody Banks Globally",
+                profName: "Connor Tadhg Patel", profTitle: "Regional Manager for Mexico & South America",
+                hMeta: "Heritage", hTitle: "Our Origin & Historical Context",
+                hist1T: "Founding Father's Lineage", hist1D: "Founded in 1784 by Alexander Hamilton, the first Secretary of the Treasury. We are the oldest bank in the United States.",
+                hist2T: "The Powerhouse Merger", hist2D: "Modern BNY Mellon was forged in 2007 through the monumental merger of The Bank of New York and Mellon Financial.",
+                hist3T: "Centuries of Resilience", hist3D: "Surviving the Revolutionary War, the Great Depression, and the 2008 financial crisis, we stand as the ultimate safe haven for sovereign funds.",
+                bMeta: "Core Business", bTitle: "Our Main Businesses & Triple Pillars",
+                biz1Title: "Securities Services & Custodial Banking", biz1Desc: "When global mega-funds and governments purchase billions, they rely on our elite security and technological infrastructure.",
+                biz1S1T: "Global Custody", biz1S1D: "Delivering institutional clearing, settlement, safekeeping, and asset accounting services.",
+                biz1S2T: "Triparty Repo & Collateral Management", biz1S2D: "Playing a critical role in the US Treasury market ensuring secure liquidity transmission.",
+                biz2Title: "Market and Wealth Services", biz2Desc: "Ensuring capital flows smoothly through the global financial ecosystem with total structural efficiency.",
+                biz2S1T: "Pershing Clearing", biz2S1D: "The top clearing platform providing deep backend technology to thousands of financial advisers.",
+                biz2S2T: "Treasury Services", biz2S2D: "Enabling global enterprises to perform multi-currency global payments and high-tier cash management.",
+                biz3Title: "Investment & Wealth Management", biz3Desc: "We don't just protect assets; we leverage institutional intelligence to grow global portfolios.",
+                biz3S1T: "Multi-Boutique Model", biz3S1D: "Housing world-class investment firms like Mellon and Dreyfus to offer bespoke multi-asset strategies.",
+                fMeta: "Future Blueprint", fTitle: "Future Plans & Strategic Focus (2026)",
+                fC1T: "AI as a Super Enabler", fC1S1T: "Predictive Trade Analytics", fC1S1D: "Utilizing patented AI to analyze global trade patterns, mitigating operational settlement risk dynamically.",
+                fC1S2T: "Efficiency Revolution", fC1S2D: "Targeting a 30% pre-tax margin in Securities Services in the medium term via advanced automated AI processing.",
+                fC2T: "Digital Assets & Tokenization", fC2S1T: "Real World Asset (RWA) Tokenization", fC2S1D: "Pioneering the tokenization of traditional assets to dramatically improve global market liquidity.",
+                fC2S2T: "7x24x365 Non-stop Operations", fC2S2D: "Re-architecting systems to support instantaneous, uninterrupted global capital and collateral mobilization.",
+                fC3T: "Central Clearing & T+1 Extension", fC3S1T: "Intraday Liquidity Management", fC3S1D: "Helping institutional clients navigate strict central clearing mandates and accelerated settlement windows.",
+                fC4T: "High-Quality Fee-Driven Growth", fC4S1T: "Superior Capital Returns", fC4S1D: "Deploying significant dividend increases and share buybacks backed by strong SCB capital positions.",
+                finalVision: "'I am not just a 240-year-old Wall Street icon, but a global fintech infrastructure powerhouse disguised as a bank. My future anchors on Hamilton's elite risk culture while harnessing AI and DLT to rule global financial rails.'"
+            },
+            es: {
+                navHome: "Inicio", navHistory: "Historia", navBusiness: "Negocios", navFuture: "Estrategia", currentLangName: "Español",
+                heroTitle: "Bienvenido a BNY Mellon",
+                heroDesc: "Somos los guardianes e impulsores de la infraestructura financiera global, el banco de los bancos.",
+                stat1Desc: "Activos bajo custodia y administración", stat2Desc: "Años de impecable solidez financiera", stat3Desc: "Líder global en servicios de custodia",
+                profName: "Connor Tadhg Patel", profTitle: "Gerente Regional para México y Sudamérica",
+                hMeta: "Legado", hTitle: "Nuestra Historia",
+                hist1T: "Linaje Fundacional", hist1D: "Fundado en 1784 por Alexander Hamilton. Somos el banco más antiguo de los Estados Unidos.",
+                hist2T: "La Gran Fusión", hist2D: "Nacido en 2007 de la unión entre The Bank of New York y Mellon Financial.",
+                hist3T: "Resiliencia de Siglos", hist3D: "Superando todas las crisis históricas, somos el refugio seguro de los fondos soberanos.",
+                bMeta: "Negocio Central", bTitle: "Nuestros Tres Pilares Primordiales",
+                biz1Title: "Servicios de Valores y Custodia Global", biz1Desc: "Protección y contabilidad de activos a escala multimillonaria global.",
+                biz1S1T: "Custodia Global", biz1S1D: "Servicios de liquidación y custodia automatizada para instituciones.",
+                biz1S2T: "Gestión de Colaterales", biz1S2D: "Papel central en el mercado de bonos del Tesoro de EE. UU.",
+                biz2Title: "Servicios de Mercado y Riqueza", biz2Desc: "Optimización de la fluidez del capital internacional.",
+                biz2S1T: "Pershing", biz2S1D: "Infraestructura de compensación de vanguardia para firmas globales.",
+                biz2S2T: "Servicios de Tesonería", biz2S2D: "Pagos internacionales de alto valor y gestión de efectivo corporativo.",
+                biz3Title: "Gestión de Inversiones y Riqueza", biz3Desc: "Estrategias sofisticadas y personalizadas para inversores institucionales.",
+                biz3S1T: "Modelo Multi-Boutique", biz3S1D: "Especialistas globales como Mellon y Dreyfus a su disposición.",
+                fMeta: "Futuro 2026", fTitle: "Estrategia de Futuro y Enfoque en IA",
+                fC1T: "IA como Supercatalizador", fC1S1T: "Analítica Predictiva de Operaciones", fC1S1D: "Prevención de fallos en liquidación antes de que ocurran.",
+                fC1S2T: "Revolución de la Eficiencia", fC1S2D: "Aumento de los márgenes mediante automatización avanzada por IA.",
+                fC2T: "Activos Digitales y Tokenización", fC2S1T: "Tokenización de RWA", fC2S1D: "Transformando activos reales en tokens digitales altamente líquidos.",
+                fC2S2T: "Operaciones 24/7/365", fC2S2D: "Movilidad instantánea de colaterales globales sin horario de cierre.",
+                fC3T: "Compensación Central y T+1", fC3S1T: "Liquidez Intradía", fC3S1D: "Soporte institucional ante ciclos de liquidación acelerados.",
+                fC4T: "Crecimiento Basado en Comisiones", fC4S1T: "Retorno de Capital Elevado", fC4S1D: "Incremento de dividendos sostenido por una sólida base de capital.",
+                finalVision: "'No soy solo un banco de Wall Street, sino un titán tecnológico que impulsa la infraestructura del dinero mundial.'"
+            },
+            pt: {
+                navHome: "Início", navHistory: "História", navBusiness: "Negócios", navFuture: "Estrategia", currentLangName: "Português",
+                heroTitle: "Bem-vindo ao BNY Mellon", heroDesc: "A espinha dorsal das instituições globais e o guardião da infraestrutura financeira do planeta.",
+                stat1Desc: "Ativos sob custódia e administração", stat2Desc: "Anos de confiança inabalável", stat3Desc: "Líder mundial em serviços de custódia",
+                profName: "Connor Tadhg Patel", profTitle: "Gerente Regional para o México e América do Sul",
+                hMeta: "Legado", hTitle: "Nossa Fundação e História",
+                hist1T: "Origem Constitucional", hist1D: "Fundado em 1784 por Alexander Hamilton, primeiro Secretário do Tesouro dos EUA.",
+                hist2T: "Fusão de Gigantes", hist2D: "Criado em 2007 pela união estratégica entre Bank of New York e Mellon Financial.",
+                hist3T: "Resiliência Secular", hist3D: "Aprovado pelas maiores crises da história, o porto seguro dos fundos soberanos.",
+                bMeta: "Pilares", bTitle: "Nossos Três Pilares Corporativos",
+                biz1Title: "Serviços de Ativos e Custodia Global", biz1Desc: "Guarda e escrituração de portfólios institucionais de alta escala.",
+                biz1S1T: "Custodia Global", biz1S1D: "Liquidação e contabilidade automatizada de ativos transfronteiriços.",
+                biz1S2T: "Gestão de Colaterais", biz1S2D: "Atuação crucial na liquidez do mercado de títulos públicos.",
+                biz2Title: "Serviços de Mercado e Wealth", biz2Desc: "Movimentação ágil e eficiente de fluxos globais de caixa.",
+                biz2S1T: "Pershing", biz2S1D: "Plataforma de compensação de elite para corretoras e consultores.",
+                biz2S2T: "Serviços de Tesouraria", biz2S2D: "Pagos corporativos complexos e gestão transfronteiriça.",
+                biz3Title: "Gestão de Investimentos", biz3Desc: "Soluções sob medida baseadas em inteligência macroeconômica.",
+                biz3S1T: "Modelo Multi-Boutique", biz3S1D: "Acesso direto a gestores líderes como Mellon e Dreyfus.",
+                fMeta: "Futuro", fTitle: "Foco Estratégico e Inovação (2026)",
+                fC1T: "IA como Super Catalisador", fC1S1T: "Análise Preditiva de Operações", fC1S1D: "Detecção e mitigação precoce de falhas de liquidação de mercado.",
+                fC1S2T: "Revolução de Eficiência", fC1S2D: "Meta de margem pré-imposto de 30% em serviços de ativos via IA.",
+                fC2T: "Ativos Digitais e Tokenización", fC2S1T: "Tokenização de RWA", fC2S1D: "Conversão de ativos reais em registros blockchain supereficientes.",
+                fC2S2T: "Operação 24/7/365", fC2S2D: "Arquitetura líquida ininterrupta para circulação mundial de ativos.",
+                fC3T: "Compensação Centralizada e T+1", fC3S1T: "Liquidez Intradia", fC3S1D: "Suporte a clientes institucionais em ciclos rápidos de liquidação.",
+                fC4T: "Crecimento por Taxas", fC4S1T: "Retorno Superior aos Acionistas", fC4S1D: "Aumento robusto de dividendos suportado pela força do nosso balanço.",
+                finalVision: "'Somos a infraestrutura invisível e indestrutível que move o ecossistema financeiro mundial.'"
+            }
+        };
+
+        // 下拉菜单显示/隐藏切换
+        function toggleLangDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        // 全球语言核心切换引擎
+        function changeLang(langKey) {
+            const data = i18nData[langKey] || i18nData['en'];
+            
+            document.getElementById('current-lang').innerText = data.currentLangName;
+            document.getElementById('nav-home').innerHTML = data.navHome;
+            document.getElementById('nav-history').innerHTML = data.navHistory;
+            document.getElementById('nav-business').innerHTML = data.navBusiness;
+            document.getElementById('nav-future').innerHTML = data.navFuture;
+            
+            document.getElementById('hero-title').innerHTML = data.heroTitle;
+            document.getElementById('hero-desc').innerHTML = data.heroDesc;
+            document.getElementById('stat-1-desc').innerHTML = data.stat1Desc;
+            document.getElementById('stat-2-desc').innerHTML = data.stat2Desc;
+            document.getElementById('stat-3-desc').innerHTML = data.stat3Desc;
+            
+            document.getElementById('prof-name').innerHTML = data.profName;
+            document.getElementById('prof-title').innerHTML = data.profTitle;
+
+            document.getElementById('h-meta').innerHTML = data.hMeta;
+            document.getElementById('h-title').innerHTML = data.hTitle;
+            document.getElementById('hist-1-t').innerHTML = data.hist1T;
+            document.getElementById('hist-1-d').innerHTML = data.hist1D;
+            document.getElementById('hist-2-t').innerHTML = data.hist2T;
+            document.getElementById('hist-2-d').innerHTML = data.hist2D;
+            document.getElementById('hist-3-t').innerHTML = data.hist3T;
+            document.getElementById('hist-3-d').innerHTML = data.hist3D;
+
+            document.getElementById('b-meta').innerHTML = data.bMeta;
+            document.getElementById('b-title').innerHTML = data.bTitle;
+            document.getElementById('biz-1-title').innerHTML = data.biz1Title;
+            document.getElementById('biz-1-desc').innerHTML = data.biz1Desc;
+            document.getElementById('biz-1-s1-t').innerHTML = data.biz1S1T;
+            document.getElementById('biz-1-s1-d').innerHTML = data.biz1S1D;
+            document.getElementById('biz-1-s2-t').innerHTML = data.biz1S2T;
+            document.getElementById('biz-1-s2-d').innerHTML = data.biz1S2D;
+
+            document.getElementById('biz-2-title').innerHTML = data.biz2Title;
+            document.getElementById('biz-2-desc').innerHTML = data.biz2Desc;
+            document.getElementById('biz-2-s1-t').innerHTML = data.biz2S1T;
+            document.getElementById('biz-2-s1-d').innerHTML = data.biz2S1D;
+            document.getElementById('biz-2-s2-t').innerHTML = data.biz2S2T;
+            document.getElementById('biz-2-s2-d').innerHTML = data.biz2S2D;
+
+            document.getElementById('biz-3-title').innerHTML = data.biz3Title;
+            document.getElementById('biz-3-desc').innerHTML = data.biz3Desc;
+            document.getElementById('biz-3-s1-t').innerHTML = data.biz3S1T;
+            document.getElementById('biz-3-s1-d').innerHTML = data.biz3S1D;
+
+            document.getElementById('f-meta').innerHTML = data.fMeta;
+            document.getElementById('f-title').innerHTML = data.fTitle;
+            document.getElementById('f-c1-t').innerHTML = data.fC1T;
+            document.getElementById('f-c1-s1-t').innerHTML = data.fC1S1T;
+            document.getElementById('f-c1-s1-d').innerHTML = data.fC1S1D;
+            document.getElementById('f-c1-s2-t').innerHTML = data.fC1S2T;
+            document.getElementById('f-c1-s2-d').innerHTML = data.fC1S2D;
+
+            document.getElementById('f-c2-t').innerHTML = data.fC2T;
+            document.getElementById('f-c2-s1-t').innerHTML = data.fC2S1T;
+            document.getElementById('f-c2-s1-d').innerHTML = data.fC2S1D;
+            document.getElementById('f-c2-s2-t').innerHTML = data.fC2S2T;
+            document.getElementById('f-c2-s2-d').innerHTML = data.fC2S2D;
+
+            document.getElementById('f-c3-t').innerHTML = data.fC3T;
+            document.getElementById('f-c3-s1-t').innerHTML = data.fC3S1T;
+            document.getElementById('f-c3-s1-d').innerHTML = data.fC3S1D;
+
+            document.getElementById('f-c4-t').innerHTML = data.fC4T;
+            document.getElementById('f-c4-s1-t').innerHTML = data.fC4S1T;
+            document.getElementById('f-c4-s1-d').innerHTML = data.fC4S1D;
+
+            document.getElementById('final-vision').innerHTML = data.finalVision;
+        }
+
+        // 点击空白处自动关闭语言菜单
+        window.onclick = function() {
+            document.getElementById('langDropdown').classList.remove('show');
+        }
+
+        // 导航滚动视觉反馈
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 优雅流星动态背景渲染引擎
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 45;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = 0;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+                    this.reset();
+                    this.y = 0;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#D4AF37";
+                ctx.fillStyle = Math.random() > 0.7 ? '#00F2FE' : '#D4AF37';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#040A17');
+            gradient.addColorStop(1, '#02050B');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
