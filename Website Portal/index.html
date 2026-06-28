@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNY Mellon | 纽约梅隆银行 - 全球金融基础设施的守护者</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-deep: #050C1A;
+            --bg-card: rgba(13, 27, 42, 0.7);
+            --primary-gold: #D4AF37;
+            --light-gold: #F3E5AB;
+            --text-pure: #FFFFFF;
+            --text-muted: #A0AEC0;
+            --accent-cyan: #00F2FE;
+            --border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-pure);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* 优雅流星动态背景 Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* 高级通栏导航栏 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(5, 12, 26, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            padding: 20px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        header.scrolled {
+            padding: 12px 6%;
+            background: rgba(5, 12, 26, 0.95);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--text-pure) 30%, var(--primary-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-gold);
+        }
+
+        /* 12国语言极致切换器 */
+        .lang-selector {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--light-gold);
+            transition: all 0.3s;
+        }
+
+        .lang-selector:hover {
+            background: rgba(212, 175, 55, 0.15);
+            border-color: var(--primary-gold);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 110%;
+            right: 0;
+            width: 220px;
+            background: #0B1528;
+            border: 1px solid var(--primary-gold);
+            border-radius: 6px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            display: none;
+            grid-template-columns: 1fr;
+            padding: 8px 0;
+            z-index: 2000;
+        }
+
+        .lang-dropdown.show {
+            display: grid;
+        }
+
+        .lang-option {
+            padding: 10px 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .lang-option:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary-gold);
+            padding-left: 25px;
+        }
+
+        /* Hero 顶级门面场景 - 双栏响应式重构 */
+        .hero-section {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            padding: 120px 8% 60px 8%;
+            position: relative;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-badge {
+            border: 1px solid var(--primary-gold);
+            padding: 6px 16px;
+            border-radius: 50px;
+            width: fit-content;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary-gold);
+            margin-bottom: 25px;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin-bottom: 25px;
+            max-width: 900px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            color: var(--primary-gold);
+            font-family: 'Cinzel', serif;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 40px;
+            font-weight: 300;
+            text-align: justify;
+        }
+
+        /* 镶嵌高管照片的高级右侧名片容器 */
+        .hero-profile-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, rgba(13, 27, 42, 0.8) 0%, rgba(5, 12, 26, 0.9) 100%);
+            border: 1px solid var(--primary-gold);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.1);
+            width: 100%;
+            max-width: 380px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(212, 175, 55, 0.25);
+        }
+
+        .profile-img-wrapper {
+            width: 100%;
+            height: 420px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 18px;
+            background: #030812;
+        }
+
+        .profile-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .profile-info {
+            text-align: center;
+        }
+
+        .profile-name {
+            font-family: 'Cinzel', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-pure);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .profile-title {
+            font-size: 12px;
+            color: var(--primary-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* 核心宏观数据展示 */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+        }
+
+        .stat-item h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 32px;
+            color: var(--primary-gold);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* 通用章节点美学 */
+        .section-container {
+            padding: 100px 8%;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .section-header span {
+            font-size: 12px;
+            color: var(--primary-gold);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--primary-gold);
+        }
+
+        /* 历史轴卡片 */
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .history-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .history-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.1);
+        }
+
+        .history-year {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-card h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-pure);
+        }
+
+        .history-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* 主营业务板块群 */
+        .business-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 35px;
+        }
+
+        .business-card {
+            background: linear-gradient(180deg, rgba(13,27,42,0.4) 0%, rgba(5,12,26,0.9) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 45px 35px;
+            transition: all 0.4s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .business-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 20px 40px rgba(0, 242, 254, 0.08);
+        }
+
+        .biz-icon {
+            font-size: 32px;
+            color: var(--primary-gold);
+            margin-bottom: 30px;
+        }
+
+        .business-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+
+        .biz-sub-item {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .biz-sub-item h5 {
+            color: var(--light-gold);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .biz-sub-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* 未来计划板块 */
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .future-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .future-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-gold);
+        }
+
+        .future-card.cyan::before {
+            background: var(--accent-cyan);
+        }
+
+        .future-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-pure);
+        }
+
+        .future-card ul {
+            list-style: none;
+        }
+
+        .future-card li {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .future-card li strong {
+            color: var(--light-gold);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* 宏观愿景大尾部 */
+        .vision-statement {
+            background: radial-gradient(circle at center, rgba(212,175,55,0.1) 0%, transparent 70%);
+            text-align: center;
+            padding: 100px 15%;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .vision-statement i {
+            font-size: 40px;
+            color: var(--primary-gold);
+            margin-bottom: 30px;
+        }
+
+        .vision-statement p {
+            font-size: 22px;
+            font-family: 'Cinzel', serif;
+            line-height: 1.8;
+            color: var(--light-gold);
+            font-weight: 500;
+        }
+
+        footer {
+            background: #030812;
+            padding: 40px 8%;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #4A5568;
+            font-size: 13px;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 1024px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 140px;
+            }
+            .hero-badge, .stat-grid {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .history-grid, .business-grid, .future-grid {
+                grid-template-columns: 1fr;
+            }
+            header nav {
+                display: none; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <header id="main-header">
+        <div class="logo-area">
+            <span class="logo-text">BNY MELLON</span>
+        </div>
+        <nav>
+            <a href="#hero" class="active" id="nav-home">首页</a>
+            <a href="#history" id="nav-history">历史起源</a>
+            <a href="#business" id="nav-business">核心主营</a>
+            <a href="#future" id="nav-future">未来战略</a>
+            
+            <div class="lang-selector" onclick="toggleLangDropdown(event)">
+                <i class="fa-solid fa-globe"></i>
+                <span id="current-lang">简体中文</span>
+                <i class="fa-solid fa-chevron-down" style="font-size:10px;"></i>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" onclick="changeLang('zh')">简体中文</div>
+                    <div class="lang-option" onclick="changeLang('en')">English</div>
+                    <div class="lang-option" onclick="changeLang('es')">Español</div>
+                    <div class="lang-option" onclick="changeLang('pt')">Português</div>
+                    <div class="lang-option" onclick="changeLang('fr')">Français</div>
+                    <div class="lang-option" onclick="changeLang('de')">Deutsch</div>
+                    <div class="lang-option" onclick="changeLang('it')">Italiano</div>
+                    <div class="lang-option" onclick="changeLang('ja')">日本語</div>
+                    <div class="lang-option" onclick="changeLang('ko')">한국어</div>
+                    <div class="lang-option" onclick="changeLang('ru')">Русский</div>
+                    <div class="lang-option" onclick="changeLang('ar')">العربية</div>
+                    <div class="lang-option" onclick="changeLang('zh_hk')">繁體中文 (香港)</div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge" id="hero-badge">SINCE 1784 | THE BANK OF BANKS</div>
+            <h1 class="hero-title" id="hero-title">
+                您好！欢迎来到纽约梅隆银行<br>
+                <span>全球金融基础设施的守护者与驱动者</span>
+            </h1>
+            <p class="hero-desc" id="hero-desc">
+                在金融界，大家常把我称作“银行的银行”或“机构的隐形脊梁”。我不是那种开在街头巷尾、办理个人房贷或信用卡的传统零售银行；我是全球金融基础设施的守护者和驱动者。
+            </p>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <h3 id="stat-1">$50T</h3>
+                    <p id="stat-1-desc">管理、移动与保护资产规模</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="stat-2">240+</h3>
+                    <p id="stat-2-desc">横跨世纪的信用沉淀 (年)</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="stat-3">Top 1</h3>
+                    <p id="stat-3-desc">全球最大资管与托管机构之一</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-profile-container">
+            <div class="profile-card">
+                <div class="profile-img-wrapper">
+                    <img src="my-avatar.jpg" alt="Connor Tadhg Patel">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name" id="prof-name">Connor Tadhg Patel</div>
+                    <div class="profile-title" id="prof-title">纽约梅隆银行 墨西哥及南美洲区域经理</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="history">
+        <div class="section-header">
+            <span id="h-meta">Heritage</span>
+            <h2 id="h-title">我的诞生与历史背景</h2>
+        </div>
+        <div class="history-grid">
+            <div class="history-card">
+                <div class="history-year">1784 <i class="fa-solid fa-scroll"></i></div>
+                <h4 id="hist-1-t">开国元勋的血统</h4>
+                <p id="hist-1-d">由美国开国元勋、第一任财政部长亚历山大·汉密尔顿（Alexander Hamilton）亲自创立。我是美国历史最悠久的银行。</p>
+            </div>
+            <div class="history-card">
+                <div class="history-year">2007 <i class="fa-solid fa-code-merge"></i></div>
+                <h4 id="hist-2-t">双雄强强合并</h4>
+                <p id="hist-2-d">现代的我，是由纽约银行（Bank of New York）与梅隆金融公司（Mellon Financial）强强联手合并而成的时代巨擘。</p>
+            </div>
+            <div class="history-card">
+                <div class="history-year">240Y+ <i class="fa-solid fa-shield-halved"></i></div>
+                <h4 id="hist-3-t">跨越世纪的韧性</h4>
+                <p id="hist-3-d">从独立战争、大萧条到全球金融海啸，我始终保持坚如夯石的信用，成为全球主权基金与顶级机构最信赖的避风港。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="business">
+        <div class="section-header">
+            <span id="b-meta">Core Business</span>
+            <h2 id="b-title">我的主营业务与三大支柱</h2>
+        </div>
+        <div class="business-grid">
+            <div class="business-card">
+                <div>
+                    <div class="biz-icon"><i class="fa-solid fa-vault"></i></div>
+                    <h3 id="biz-1-title">资产服务与全球托管</h3>
+                    <p style="font-size:14px; color:var(--text-muted);" id="biz-1-desc">当全球大型基金、养老金、政府机构购买千亿资产时，我为其提供足够安全与技术强大的底层支持。</p>
+                </div>
+                <div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-1-s1-t">全球托管</h5>
+                        <p id="biz-1-s1-d">提供高度自动化的清算、结算、资产保管和会计服务。</p>
+                    </div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-1-s2-t">三方回购与抵押品管理</h5>
+                        <p id="biz-1-s2-d">在美国国债和回购市场中承担核心第三方清算角色，保障市场流动性安全传导。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="business-card">
+                <div>
+                    <div class="biz-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3 id="biz-2-title">市场与财富服务</h3>
+                    <p style="font-size:14px; color:var(--text-muted);" id="biz-2-desc">专注于全球金融体系中资金的高效周转，保障交易生态全天候顺畅无阻。</p>
+                </div>
+                <div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-2-s1-t">Pershing 清算业务</h5>
+                        <p id="biz-2-s1-d">全美顶尖的财富管理外包平台，为数千家独立理财顾问、券商提供底层清算。 </p>
+                    </div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-2-s2-t">财政与库务服务</h5>
+                        <p id="biz-2-s2-d">助力全球机构开展高效的跨境大额付款、全方位现金管理及外汇清结算。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="business-card">
+                <div>
+                    <div class="biz-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h3 id="biz-3-title">投资与财富管理</h3>
+                    <p style="font-size:14px; color:var(--text-muted);" id="biz-3-desc">不仅保管资产，更通过卓越的智库团队与前沿策略，协助全球精英机构打理财富。</p>
+                </div>
+                <div>
+                    <div class="biz-sub-item">
+                        <h5 id="biz-3-s1-t">多精品店（Multi-boutique）模式</h5>
+                        <p id="biz-3-s1-d">旗下汇聚 Mellon、Dreyfus 等垂直顶尖投研机构，提供涵盖主动权益、指数化及固收的定制方案。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="future">
+        <div class="section-header">
+            <span id="f-meta">Future Blueprint</span>
+            <h2 id="f-title">未来计划与战略重点 (2026)</h2>
+        </div>
+        <div class="future-grid">
+            <div class="future-card">
+                <div class="future-tag"><i class="fa-solid fa-rocket" style="color:var(--primary-gold)"></i> <span id="f-c1-t">AI 驱动的“超级催化剂”</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c1-s1-t">预测性贸易分析 (Predictive Trade Analytics)</strong>
+                        <span id="f-c1-s1-d">借助专利 AI 技术，在结算失败发生前提前预测高风险交易，大幅降低系统操作风险。</span>
+                    </li>
+                    <li>
+                        <strong id="f-c1-s2-t">效率革命</strong>
+                        <span id="f-c1-s2-d">通过底层 AI 优化流程，目标在中期内将证券服务板块的税前利润率提升至 30%。</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="future-card cyan">
+                <div class="future-tag"><i class="fa-solid fa-cubes" style="color:var(--accent-cyan)"></i> <span id="f-c2-t">数字化转型与代币化</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c2-s1-t">真实世界资产 (RWA) 代币化</strong>
+                        <span id="f-c2-s1-d">探索将传统资产与负债进行代币化（Tokenization），提高全球市场流动性与即时清算。</span>
+                    </li>
+                    <li>
+                        <strong id="f-c2-s2-t">7x24x365 全天候运营</strong>
+                        <span id="f-c2-s2-d">重构底层架构，支持零闭市、无缝即时的跨国资产流动与全球抵押品高效调拨。</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="future-card cyan">
+                <div class="future-tag"><i class="fa-solid fa-bolt" style="color:var(--accent-cyan)"></i> <span id="f-c3-t">国债集中清算与 T+1 延展</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c3-s1-t">日内流动性强化</strong>
+                        <span id="f-c3-s1-d">积极应对美债集中清算法规要求，协助全球客户提高抵押品的可移动性与日内流转速度。</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="future-card">
+                <div class="future-tag"><i class="fa-solid fa-coins" style="color:var(--primary-gold)"></i> <span id="f-c4-t">高质量 Fee-Driven 增长</span></div>
+                <ul>
+                    <li>
+                        <strong id="f-c4-s1-t">资本回报跃升</strong>
+                        <span id="f-c4-s1-d">得益于低 SCB 要求，持续推进极具竞争力的红利分派计划并深度聚焦费率驱动型的高粘性稳健收入。</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="vision-statement">
+        <i class="fa-solid fa-monument"></i>
+        <p id="final-vision">
+            “我不仅是一家历经 240 多年风雨的华尔街老牌银行，更是一家伪装成银行的‘全球金融科技基础设施巨头’。我的未来，是左手握着亚历山大·汉密尔顿传承下来的顶级风控与信任，右手紧握 AI 与区块链技术，继续在全球金融生态中扮演那块最不可或缺的压舱石。”
+        </p>
+    </section>
+
+    <footer>
+        <div>© 2026 BNY Mellon. All Infrastructure Secured</div>
+        <div></div>
+    </footer>
+
+
+    <script>
+        // 12国核心文案词典数据库（新增了高管信息的国际化翻译映射）
+        const i18nData = {
+            zh: {
+                navHome: "首页", navHistory: "历史起源", navBusiness: "核心主营", navFuture: "未来战略", currentLangName: "简体中文",
+                heroTitle: "您好！欢迎来到纽约梅隆银行<br><span>全球金融基础设施的守护者与驱动者</span>",
+                heroDesc: "在金融界，大家常把我称作“银行的银行”或“机构的隐形脊梁”。我不是那种开在街头巷尾、办理个人房贷或信用卡的传统零售银行；我是全球金融基础设施的守护者和驱动者。",
+                stat1Desc: "管理、移动与保护资产规模", stat2Desc: "横跨世纪的信用沉淀 (年)", stat3Desc: "全球最大资管与托管机构之一",
+                profName: "Connor Tadhg Patel", profTitle: "纽约梅隆银行 墨西哥及南美洲区域经理",
+                hMeta: "Heritage", hTitle: "我的诞生与历史背景",
+                hist1T: "开国元勋的血统", hist1D: "由美国开国元勋、第一任财政部长亚历山大·汉密尔顿亲自创立。我是美国历史最悠久的银行。",
+                hist2T: "双雄强强合并", hist2D: "现代的我，是由纽约银行与梅隆金融公司在 2007 年强强联手合并而成的时代巨擘。",
+                hist3T: "跨越世纪的韧性", hist3D: "从独立战争、大萧条到全球金融海啸，我始终保持坚如磐石的信用，成为全球主权基金与顶级机构最信赖的避风港。",
+                bMeta: "Core Business", bTitle: "我的主营业务与三大支柱",
+                biz1Title: "资产服务与全球托管", biz1Desc: "当全球大型基金、养老金、政府机构购买千亿资产时，我为其提供足够安全与技术强大的底层支持。",
+                biz1S1T: "全球托管", biz1S1D: "提供高度自动化的清算、结算、资产保管和会计服务。",
+                biz1S2T: "三方回购与抵押品管理", biz1S2D: "在美国国债和回购市场中承担核心第三方清算角色，保障市场流动性安全传导。",
+                biz2Title: "市场与财富服务", biz2Desc: "专注于全球金融体系中资金的高效周转，保障交易生态全天候顺畅无阻。",
+                biz2S1T: "Pershing 清算业务", biz2S1D: "全美顶尖的财富管理外包平台，为数千家独立理财顾问、券商提供底层清算。",
+                biz2S2T: "财政与库务服务", biz2S2D: "助力全球机构开展高效的跨境大额付款、全方位现金管理及外汇清结算。",
+                biz3Title: "投资与财富管理", biz3Desc: "不仅保管资产，更通过卓越的智库团队与前沿策略，协助全球精英机构打理财富。",
+                biz3S1T: "多精品店模式", biz3S1D: "旗下汇聚 Mellon、Dreyfus 等垂直顶尖投研机构，提供涵盖主动权益、指数化及固收的定制方案。",
+                fMeta: "Future Blueprint", fTitle: "未来计划与战略重点 (2026)",
+                fC1T: "AI 驱动的“超级催化剂”", fC1S1T: "预测性贸易分析", fC1S1D: "借助专利 AI 技术，在结算失败发生前提前预测高风险交易，大幅降低系统操作风险。",
+                fC1S2T: "效率革命", fC1S2D: "通过底层 AI 优化流程，目标在中期内将证券服务板块的税前利润率提升至 30%。",
+                fC2T: "数字化转型与代币化", fC2S1T: "真实世界资产 (RWA) 代币化", fC2S1D: "探索将传统资产与负债进行代币化，提高全球市场流动性与即时清算效率。",
+                fC2S2T: "7x24x365 全天候运营", fC2S2D: "重构底层架构，支持零闭市、无缝即时的跨国资产流动与全球抵押品高效调拨。",
+                fC3T: "国债集中清算与 T+1 延展", fC3S1T: "日內流动性强化", fC3S1D: "积极应对美债集中清算法规要求，协助全球客户提高抵押品的可移动性与日内流转速度。",
+                fC4T: "高质量 Fee-Driven 增长", fC4S1T: "资本回报跃升", fC4S1D: "得益于低 SCB 要求，持续推进极具竞争力的红利分派计划并深度聚焦费率驱动型的高粘性稳健收入。",
+                finalVision: "“我不仅是一家历经 240 多年风雨的华尔街老牌银行，更是一家伪装成银行的‘全球金融科技基础设施巨头’。我的未来，是左手握着亚历山大·汉密尔顿传承下来的顶级风控与信任，右手紧握 AI 与区块链技术，继续在全球金融生态中扮演那块最不可或缺的压舱石。”"
+            },
+            en: {
+                navHome: "Home", navHistory: "History", navBusiness: "Businesses", navFuture: "Future Strategy", currentLangName: "English",
+                heroTitle: "Welcome to BNY Mellon<br><span>Guardian & Mover of Global Financial Infrastructure</span>",
+                heroDesc: "In the financial world, I am often called the 'Bank of Banks' or the 'Invisible Backbone of Institutions'. I am not a retail bank; I guard and power the infrastructure of global financial markets.",
+                stat1Desc: "Assets Under Custody and/or Administration", stat2Desc: "Years of Unrivaled Financial Trust", stat3Desc: "One of the Largest Custody Banks Globally",
+                profName: "Connor Tadhg Patel", profTitle: "Regional Manager for Mexico & South America",
+                hMeta: "Heritage", hTitle: "Our Origin & Historical Context",
+                hist1T: "Founding Father's Lineage", hist1D: "Founded in 1784 by Alexander Hamilton, the first Secretary of the Treasury. We are the oldest bank in the United States.",
+                hist2T: "The Powerhouse Merger", hist2D: "Modern BNY Mellon was forged in 2007 through the monumental merger of The Bank of New York and Mellon Financial.",
+                hist3T: "Centuries of Resilience", hist3D: "Surviving the Revolutionary War, the Great Depression, and the 2008 financial crisis, we stand as the ultimate safe haven for sovereign funds.",
+                bMeta: "Core Business", bTitle: "Our Main Businesses & Triple Pillars",
+                biz1Title: "Securities Services & Custodial Banking", biz1Desc: "When global mega-funds and governments purchase billions, they rely on our elite security and technological infrastructure.",
+                biz1S1T: "Global Custody", biz1S1D: "Delivering institutional clearing, settlement, safekeeping, and asset accounting services.",
+                biz1S2T: "Triparty Repo & Collateral Management", biz1S2D: "Playing a critical role in the US Treasury market ensuring secure liquidity transmission.",
+                biz2Title: "Market and Wealth Services", biz2Desc: "Ensuring capital flows smoothly through the global financial ecosystem with total structural efficiency.",
+                biz2S1T: "Pershing Clearing", biz2S1D: "The top clearing platform providing deep backend technology to thousands of financial advisers.",
+                biz2S2T: "Treasury Services", biz2S2D: "Enabling global enterprises to perform multi-currency global payments and high-tier cash management.",
+                biz3Title: "Investment & Wealth Management", biz3Desc: "We don't just protect assets; we leverage institutional intelligence to grow global portfolios.",
+                biz3S1T: "Multi-Boutique Model", biz3S1D: "Housing world-class investment firms like Mellon and Dreyfus to offer bespoke multi-asset strategies.",
+                fMeta: "Future Blueprint", fTitle: "Future Plans & Strategic Focus (2026)",
+                fC1T: "AI as a Super Enabler", fC1S1T: "Predictive Trade Analytics", fC1S1D: "Utilizing patented AI to analyze global trade patterns, mitigating operational settlement risk dynamically.",
+                fC1S2T: "Efficiency Revolution", fC1S2D: "Targeting a 30% pre-tax margin in Securities Services in the medium term via advanced automated AI processing.",
+                fC2T: "Digital Assets & Tokenization", fC2S1T: "Real World Asset (RWA) Tokenization", fC2S1D: "Pioneering the tokenization of traditional assets to dramatically improve global market liquidity.",
+                fC2S2T: "7x24x365 Non-stop Operations", fC2S2D: "Re-architecting systems to support instantaneous, uninterrupted global capital and collateral mobilization.",
+                fC3T: "Central Clearing & T+1 Extension", fC3S1T: "Intraday Liquidity Management", fC3S1D: "Helping institutional clients navigate strict central clearing mandates and accelerated settlement windows.",
+                fC4T: "High-Quality Fee-Driven Growth", fC4S1T: "Superior Capital Returns", fC4S1D: "Deploying significant dividend increases and share buybacks backed by strong SCB capital positions.",
+                finalVision: "'I am not just a 240-year-old Wall Street icon, but a global fintech infrastructure powerhouse disguised as a bank. My future anchors on Hamilton's elite risk culture while harnessing AI and DLT to rule global financial rails.'"
+            },
+            es: { 
+                navHome: "Inicio", navHistory: "Historia", navBusiness: "Negocios", navFuture: "Estrategia", currentLangName: "Español", 
+                heroTitle: "Bienvenido a BNY Mellon", heroDesc: "Somos los guardianes e impulsores de la infraestructura financiera global, el banco de los bancos.", 
+                stat1Desc: "Activos bajo custodia y administración", stat2Desc: "Años de impecable solidez financiera", stat3Desc: "Líder global en servicios de custodia", 
+                profName: "Connor Tadhg Patel", profTitle: "Gerente Regional para México y Sudamérica",
+                hMeta: "Legado", hTitle: "Nuestra Historia", hist1T: "Linaje Fundacional", hist1D: "Fundado en 1784 por Alexander Hamilton. Somos el banco más antiguo de los Estados Unidos.", hist2T: "La Gran Fusión", hist2D: "Nacido en 2007 de la unión entre The Bank of New York y Mellon Financial.", hist3T: "Resiliencia de Siglos", hist3D: "Superando todas las crisis históricas, somos el refugio seguro de los fondos soberanos.", bMeta: "Negocio Central", bTitle: "Nuestros Tres Pilares Primordiales", biz1Title: "Servicios de Valores y Custodia Global", biz1Desc: "Protección y contabilidad de activos a escala multimillonaria global.", biz1S1T: "Custodia Global", biz1S1D: "Servicios de liquidación y custodia automatizada para instituciones.", biz1S2T: "Gestión de Colaterales", biz1S2D: "Papel central en el mercado de bonos del Tesoro de EE. UU.", biz2Title: "Servicios de Mercado y Riqueza", biz2Desc: "Optimización de la fluidez del capital internacional.", biz2S1T: "Pershing", biz2S1D: "Infraestructura de compensación de vanguardia para firmas globales.", biz2S2T: "Servicios de Tesorería", biz2S2D: "Pagos internacionales de alto valor y gestión de efectivo corporativo.", biz3Title: "Gestión de Inversiones y Riqueza", biz3Desc: "Estrategias sofisticadas y personalizadas para inversores institucionales.", biz3S1T: "Modelo Multi-Boutique", biz3S1D: "Especialistas globales como Mellon y Dreyfus a su disposición.", fMeta: "Futuro 2026", fTitle: "Estrategia de Futuro y Enfoque en IA", fC1T: "IA como Supercatalizador", fC1S1T: "Analítica Predictiva de Operaciones", fC1S1D: "Prevención de fallos en liquidación antes de que ocurran.", fC1S2T: "Revolución de la Eficiencia", fC1S2D: "Aumento de los márgenes mediante automatización avanzada por IA.", fC2T: "Activos Digitales y Tokenización", fC2S1T: "Tokenización de RWA", fC2S1D: "Transformando activos reales en tokens digitales altamente líquidos.", fC2S2T: "Operaciones 24/7/365", fC2S2D: "Movilidad instantánea de colaterales globales sin horario de cierre.", fC3T: "Compensación Central y T+1", fC3S1T: "Liquidez Intradía", fC3S1D: "Soporte institucional ante ciclos de liquidación acelerados.", fC4T: "Crecimiento Basado en Comisiones", fC4S1T: "Retorno de Capital Elevado", fC4S1D: "Incremento de dividendos sostenido por una sólida base de capital.", finalVision: "'No soy solo un banco de Wall Street, sino un titán tecnológico que impulsa la infraestructura del dinero mundial.'" 
+            },
+            pt: { 
+                navHome: "Início", navHistory: "História", navBusiness: "Negócios", navFuture: "Estratégia", currentLangName: "Português", 
+                heroTitle: "Bem-vindo ao BNY Mellon", heroDesc: "A espinha dorsal das instituições globais e o guardião da infraestrutura financeira do planeta.", 
+                stat1Desc: "Ativos sob custódia e administração", stat2Desc: "Anos de confiança inabalável", stat3Desc: "Líder mundial em serviços de custódia", 
+                profName: "Connor Tadhg Patel", profTitle: "Gerente Regional para o México e América do Sul",
+                hMeta: "Legado", hTitle: "Nossa Fundação e História", hist1T: "Origem Constitucional", hist1D: "Fundado em 1784 por Alexander Hamilton, primeiro Secretário do Tesouro dos EUA.", hist2T: "Fusão de Gigantes", hist2D: "Criado em 2007 pela união estratégica entre Bank of New York e Mellon Financial.", hist3T: "Resiliência Secular", hist3D: "Aprovado pelas maiores crises da história, o porto seguro dos fundos soberanos.", bMeta: "Pilares", bTitle: "Nossos Três Pilares Corporativos", biz1Title: "Serviços de Ativos e Custódia Global", biz1Desc: "Guarda e escrituração de portfólios institucionais de alta escala.", biz1S1T: "Custódia Global", biz1S1D: "Liquidação e contabilidade automatizada de ativos transfronteiriços.", biz1S2T: "Gestão de Colaterais", biz1S2D: "Atuação crucial na liquidez do mercado de títulos públicos.", biz2Title: "Serviços de Mercado e Wealth", biz2Desc: "Movimentação ágil e eficiente de fluxos globais de caixa.", biz2S1T: "Pershing", biz2S1D: "Plataforma de compensação de elite para corretoras e consultores.", biz2S2T: "Serviços de Tesouraria", biz2S2D: "Pagos corporativos complexos e gestão transfronteiriça.", biz3Title: "Gestão de Investimentos", biz3Desc: "Soluções sob medida baseadas em inteligência macroeconômica.", biz3S1T: "Modelo Multi-Boutique", biz3S1D: "Acesso direto a gestores líderes como Mellon e Dreyfus.", fMeta: "Futuro", fTitle: "Foco Estratégico e Inovação (2026)", fC1T: "IA como Super Catalisador", fC1S1T: "Análise Preditiva de Operações", fC1S1D: "Detecção e mitigação precoce de falhas de liquidação de mercado.", fC1S2T: "Revolução de Eficiência", fC1S2D: "Meta de margem pré-imposto de 30% em serviços de ativos via IA.", fC2T: "Ativos Digitais e Tokenización", fC2S1T: "Tokenização de RWA", fC2S1D: "Conversão de ativos reais em registros blockchain supereficientes.", fC2S2T: "Operação 24/7/365", fC2S2D: "Arquitetura líquida ininterrupta para circulação mundial de ativos.", fC3T: "Compensação Centralizada e T+1", fC3S1T: "Liquidez Intradia", fC3S1D: "Suporte a clientes institucionais em ciclos rápidos de liquidação.", fC4T: "Crecimento por Taxas", fC4S1T: "Retorno Superior aos Acionistas", fC4S1D: "Aumento robusto de dividendos suportado pela força do nosso balanço.", finalVision: "'Somos a infraestrutura invisível e indestrutível que move o ecossistema financeiro mundial.'" 
+            },
+            fr: { navHome: "Accueil", navHistory: "Histoire", navBusiness: "Activités", navFuture: "Stratégie", currentLangName: "Français", heroTitle: "Bienvenue chez BNY Mellon", heroDesc: "Le gardien et le moteur de l'infrastructure financière mondiale. La banque des banques.", stat1Desc: "Actifs sous garde et administration", stat2Desc: "Années de confiance absolue", stat3Desc: "Plus grande banque de garde au monde", profName: "Connor Tadhg Patel", profTitle: "Directeur Régional pour le Mexique et l'Amérique du Sud", hMeta: "Patrimoine", hTitle: "Origines & Histoire", hist1T: "Lignage des Pères Fondateurs", hist1D: "Fondé en 1784 par Alexander Hamilton, premier secrétaire au Trésor des États-Unis.", hist2T: "La Fusion Historique", hist2D: "Formé en 2007 par la fusion de The Bank of New York et Mellon Financial.", hist3T: "Résilience à travers les Siècles", hist3D: "Ayant traversé toutes les crises mondiales, nous sommes le havre des fonds souverains.", bMeta: "Métiers", bTitle: "Nos Trois Piliers d'Excellence", biz1Title: "Services de Titres & Garde Globale", biz1Desc: "Comptabilisation et protection des actifs institutionnels majeurs.", biz1S1T: "Garde Globale", biz1S1D: "Règlement-livraison automatisé et garde d'actifs transfrontaliers.", biz1S2T: "Gestion des Collatéraux", biz1S2D: "Acteur clé de la liquidité du marché des obligations du Trésor américain.", biz2Title: "Services de Marché & de Fortune", biz2Desc: "Fluidification des mouvements de capitaux au sein de l'écosystème.", biz2S1T: "Pershing", biz2S1D: "Solutions de compensation pour courtiers et conseillers financiers.", biz2S2T: "Services de Trésorerie", biz2S2D: "Paiements de gros internationaux et gestion globale des liquidités.", biz3Title: "Gestion d'Actifs et de Fortune", biz3Desc: "Solutions d'investissement gérées par des experts dédiés.", biz3S1T: "Modèle Multi-Boutique", biz3S1D: "Expertises de pointe via des entités renommées comme Mellon et Dreyfus.", fMeta: "Futur", fTitle: "Priorités Stratégiques (2026)", fC1T: "L'IA comme Super Catalyseur", fC1S1T: "Analyse Prédictive des Transactions", fC1S1D: "Anticipation des échecs de règlement avant leur survenue.", fC1S2T: "Révolution de l'Efficacité", fC1S2D: "Objectif de 30% de marge brute grâce aux optimisations de l'IA.", fC2T: "Actifs Numériques & Tokenisation", fC2S1T: "Tokenisation des RWA", fC2S1D: "Transformation des actifs réels pour une liquidité accrue.", fC2S2T: "Opérations 24/7/365", fC2S2D: "Infrastructure sans fermeture pour la mobilisation instantanée des actifs.", fC3T: "Compensation Centrale & T+1", fC3S1T: "Liquidité Intra-journalière", fC3S1D: "Accompagnement face aux cycles de règlement ultra-courts.", fC4T: "Croissance par Commissions", fC4S1T: "Rendement du Capital", fC4S1D: "Hausse continue des dividendes adossée à une structure de capital robuste.", finalVision: "'Nous combinons la confiance historique de Hamilton avec l'innovation de l'IA.'" },
+            de: { navHome: "Startseite", navHistory: "Historie", navBusiness: "Geschäftsfelder", navFuture: "Zukunftsstrategie", currentLangName: "Deutsch", heroTitle: "Willkommen bei der BNY Mellon", heroDesc: "Die Bank der Banken und der Hüter der globalen Finanzmarktinfrastruktur.", stat1Desc: "Verwahrte und verwaltete Vermögenswerte", stat2Desc: "Jahre unerschütterliches Vertrauen", stat3Desc: "Führende globale Depotbank", profName: "Connor Tadhg Patel", profTitle: "Regionalleiter für Mexiko und Südamerika", hMeta: "Erbe", hTitle: "Unsere Herkunft & Geschichte", hist1T: "Gründervater-Tradition", hist1D: "1784 von Alexander Hamilton gegründet, dem ersten Finanzminister der USA. Älteste Bank Amerikas.", hist2T: "Die Großfusion", hist2D: "2007 durch den Zusammenschluss der Bank of New York mit Mellon Financial entstanden.", hist3T: "Jahrhunderte der Resilienz", hist3D: "Ob Weltwirtschaftskrise oder Finanzkrise – wir stehen als sicherer Hafen für Staatsfonds.", bMeta: "Kernkompetenz", bTitle: "Unsere drei strategischen Säulen", biz1Title: "Wertpapierservices & Global Custody", biz1Desc: "Sichere Verwahrung und Bilanzierung weltweiter institutioneller Milliardenvermögen.", biz1S1T: "Global Custody", biz1S1D: "Automatisierte Abwicklung, Verwahrung und Rechnungslegung von Wertpapieren.", biz1S2T: "Sicherheitenmanagement", biz1S2D: "Zentrale Rolle im US-Staatsanleihenmarkt für die sichere Liquiditätsweiterleitung.", biz2Title: "Market und Wealth Services", biz2Desc: "Effiziente Abwicklung und Bewegung von Kapitalströmen weltweit.", biz2S1T: "Pershing Clearing", biz2S1D: "Infrastruktur-Plattform für Tausende unabhängige Finanzberater.", biz2S2T: "Treasury Services", biz2S2D: "Globale Großzahlungen und fortschrittliches Cash-Management für Konzerne.", biz3Title: "Investment & Wealth Management", biz3Desc: "Erstklassige Vermögensverwaltung durch spezialisierte Investmentboutiquen.", biz3S1T: "Multi-Boutique-Modell", biz3S1D: "Bündelung von Marktführern wie Mellon und Dreyfus für maßgeschneiderte Strategien.", fMeta: "Zukunft", fTitle: "Zukunftspläne & KI-Strategie (2026)", fC1T: "KI als Super-Katalysator", fC1S1T: "Prädiktive Handelsanalyse", fC1S1D: "Proaktive Vorhersage von Abwicklungsfehlern zur Minimierung operativer Risiken.", fC1S2T: "Effizienzrevolution", fC1S2D: "Anhebung der operativen Margen im Wertpapiergeschäft auf 30% mittels KI.", fC2T: "Digitale Assets & Tokenisierung", fC2S1T: "Tokenisierung realer Vermögenswerte (RWA)", fC2S1D: "Nutzung der Blockchain-Technologie zur drastischen Steigerung der Marktliquidität.", fC2S2T: "24/7/365-Betriebsmodell", fC2S2D: "Echtzeit-Infrastruktur ohne Schließzeiten für globale Vermögenswerte.", fC3T: "Zentrales Clearing & T+1", fC3S1T: "Intraday-Liquidität", fC3S1D: "Unterstützung von Kunden bei verkürzten globalen Abwicklungszyklen.", fC4T: "Gebührengetriebenes Wachstum", fC4S1T: "Starke Kapitalrückzahlungen", fC4S1D: "Kontinuierliche Dividendenerhöhungen basierend auf einer robusten Kapitalbasis.", finalVision: "'Wir sichern die finanzielle Wirbelsäule der Welt mit Tradition und High-Tech.'" },
+            it: { navHome: "Home", navHistory: "Storia", navBusiness: "Attività", navFuture: "Strategia", currentLangName: "Italiano", heroTitle: "Benvenuto in BNY Mellon", heroDesc: "Custode e motore dell'infrastruttura finanziaria mondiale. La banca delle banche.", stat1Desc: "Asset sotto custodia e amministrazione", stat2Desc: "Anni di incrollabile fiducia", stat3Desc: "Leader globale nei servizi di custodia", profName: "Connor Tadhg Patel", profTitle: "Regional Manager per il Messico e il Sud America", hMeta: "Eredità", hTitle: "Le Nostre Origini", hist1T: "Fondata dai Padri Fondatori", hist1D: "Creata nel 1784 da Alexander Hamilton, primo Segretario del Tesoro degli Stati Uniti.", hist2T: "La Grande Fusione", hist2D: "Nata nel 2007 dall'unione tra The Bank of New York e Mellon Financial.", hist3T: "Resilienza Secolare", hist3D: "Superando ogni tempesta finanziaria, siamo il rifugio sicuro dei fondi sovrani.", bMeta: "Core Business", bTitle: "I Nostri Tre Pilastri Fondamentali", biz1Title: "Servizi Titoli e Custodia Globale", biz1Desc: "Protezione e contabilità dei più grandi portafogli istituzionali al mondo.", biz1S1T: "Custodia Globale", biz1S1D: "Regolamento e custodia automatizzata per transazioni transfrontaliere.", biz1S2T: "Gestione del Collaterale", biz1S2D: "Ruolo sistemico nel mercato dei titoli di Stato americani.", biz2Title: "Market e Wealth Services", biz2Desc: "Ottimizzazione e fluidità dei flussi finanziari globali.", biz2S1T: "Pershing", biz2S1D: "Piattaforma di regolamento leader per broker e consulenti finanziari.", biz2S2T: "Treasury Services", biz2S2D: "Pagamenti internazionali ad alto valore e gestione della liquidità.", biz3Title: "Investment & Wealth Management", biz3Desc: "Soluzioni d'investimento istituzionali guidate da intelligenza macro.", biz3S1T: "Modello Multi-Boutique", biz3S1D: "Boutique di eccellenza come Mellon e Dreyfus al vostro servizio.", fMeta: "Futuro", fTitle: "Piani Futuri ed Evoluzione Digitale (2026)", fC1T: "L'IA come Super Catalizzatore", fC1S1T: "Analisi Predittiva delle Transazioni", fC1S1D: "Prevenzione dei fallimenti di regolamento prima che si verifichino.", fC1S2T: "Rivoluzione dell'Efficienza", fC1S2D: "Target di margine del 30% nei servizi titoli grazie all'automazione IA.", fC2T: "Digital Asset e Tokenizzazione", fC2S1T: "Tokenizzazione di RWA", fC2S1D: "Trasformazione di asset reali in token digitali ad alta liquidità.", fC2S2T: "Operatività 24/7/365", fC2S2D: "Infrastruttura sempre aperta per la mobilità immediata dei collaterali.", fC3T: "Clearing Centrale e T+1", fC3S1T: "Liquidità Intraday", fC3S1D: "Supporto ai clienti istituzionali nei mercati a regolamento accelerato.", fC4T: "Crescita Guidata da Commissioni", fC4S1T: "Solidi Ritorni di Capitale", fC4S1D: "Dividendi in crescita sostenuti da una forte posizione patrimoniale.", finalVision: "'Siamo la spina dorsale invisibile ma indistruttibile del denaro mondiale.'" },
+            ja: { navHome: "ホーム", navHistory: "歴史", navBusiness: "主要業務", navFuture: "未来戦略", currentLangName: "日本語", heroTitle: "BNYメロンへようこそ", heroDesc: "世界金融インフラの守護者であり、駆動者。「銀行の銀行」と呼ばれる存在です。", stat1Desc: "カストディ・管理資産残高", stat2Desc: "世紀を超えて築いた絶対的信頼(年)", stat3Desc: "世界最大級のカストディ銀行", profName: "Connor Tadhg Patel", profTitle: "メキシコおよび南米地域最高責任者", hMeta: "伝統", hTitle: "誕生と歴史的背景", hist1T: "建国の父の血統", hist1D: "1784年、米国初代財務長官アレクサンダー・ハミルトンによって設立された米国最古の銀行。", hist2T: "二大巨頭の統合", hist2D: "2007年、ニューヨーク銀行とメロン・フィナンシャルが統合し、現代の巨大な基盤が誕生。", hist3T: "世紀を超える強靭性", hist3D: "独立戦争から大恐慌、リーマンショックまでを生き抜き、政府系ファンドの究極の避難所へ。", bMeta: "主要事業", bTitle: "ビジネスを支える3つの柱", biz1Title: "アセットサービスおよびグローバル・カストディ", biz1Desc: "世界のメガファンドや政府機関が数千億規模の資産を購入する際の安全な記帳と保管を担う。", biz1S1T: "グローバル・カストディ", biz1S1D: "クロスボーダー資産の決済、保管、および会計サービスの高度な自動化。", biz1S2T: "担保管理および三者間レポ", biz1S2D: "米国債市場の重要な第三者清算機関として、市場流動性を安全に伝導。", biz2Title: "マーケットおよびウェルス・サービス", biz2Desc: "世界金融システムにおける資金の効率的な周転と24時間365日の決済を保証。", biz2S1T: "パーシング（清算業務）", biz2S1D: "全米トップクラスの外包プラットフォーム。数千の証券会社に清算基盤を提供。", biz2S2T: "トレジャリー・サービス", biz2S2D: "大企業の国境を越えた大口決済や包括的なキャッシュマネジメントを支援。", biz3Title: "投資およびウェルス・マネジメント", biz3Desc: "卓越したシンクタンクと最先端戦略により、世界の機関投資家の資産を運用。", biz3S1T: "マルチ・ブティックモデル", biz3S1D: "メロンやドレイファスなど専門性の高いトップ運用会社を傘下に擁する。", fMeta: "未来図", fTitle: "2026年の未来計画と戦略重点", fC1T: "AI駆動の「スーパー・カタリスト」", fC1S1T: "予測的トレード分析", fC1S1D: "特許AI技術により決済エラーのリスクを事前に予測し、能動的に回避。", fC1S2T: "効率性の革命", fC1S2D: "高度AIの導入により、アセットサービス部門 of 税引前利益率30％を目指す。", fC2T: "デジタル資産とトークン化", fC2S1T: "現実世界資産（RWA）のトークン化", fC2S1D: "伝統的資産のデジタル・トークン化を推進し、市場流動性を劇的に向上。", fC2S2T: "24/7/365 全天候型オペレーション", fC2S2D: "市場の「閉市」をなくし、グローバル資産と担保の即時移動を実現する新構造。", fC3T: "米国債集中清算とT+1決済対応", fC3S1T: "イントラデイ流動性の強化", fC3S1D: "決済周期の短縮化に伴い、機関投資家のシームレスな資金管理をサポート。", fC4T: "手数料主導型の高品質な成長", fC4S1T: "強固な株主還元", fC4S1D: "低いSCB要件を背景に、増配と自社株買いを継続し安定収益を確保。", finalVision: "「ハミルトンから受け継いだ厳格なリスク管理と、AI・ブロックチェーン技術を融合させます」" },
+            ko: { navHome: "홈", navHistory: "역사적 배경", navBusiness: "핵심 사업", navFuture: "미래 전략", currentLangName: "한국어", heroTitle: "BNY 멜론에 오신 것을 환영합니다", heroDesc: "글로벌 금융 인프라의 수호자이자 동력, '은행들의 은행'으로 불리는 신뢰의 축입니다.", stat1Desc: "수탁 및 관리 자산 규모", stat2Desc: "세기를 넘나드는 금융 신뢰 (년)", stat3Desc: "세계 최대 규모의 글로벌 수탁 은행", profName: "Connor Tadhg Patel", profTitle: "BNY 멜론 멕시코 및 남미 지역 본부장", bMeta: "핵심 비즈니스", bTitle: "글로벌 금융을 지탱하는 3대 지주", biz1Title: "자산 서비스 및 글로벌 수탁", biz1Desc: "전 세계 대형 펀드와 정부 기관이 대규모 자산을 매입할 때 안전한 회계 및 보관 인프라 제공.", biz1S1T: "글로벌 커스토디", biz1S1D: "국경 없는 자산의 청산, 결제, 수탁 및 고도화된 자산 회계 서비스.", biz1S2T: "삼자간 레포 및 담보 관리", biz1S2D: "미국 국채 시장의 핵심 제3자 청산 기관으로서 안전한 시장 유동성 전도 담당.", biz2Title: "마켓 및 웰스 서비스", biz2Desc: "금융 생태계 내 자금의 효율적인 순환과 결제의 안정성을 상시 보장.", biz2S1T: "퍼싱 (청산 업무)", biz2S1D: "미국 최고의 자산관리 아웃소싱 플랫폼으로 수천 개 증권사에 청산 기술 지원.", biz2S2T: "트레저리 서비스", biz2S2D: "글로벌 기업과 기관의 대규모 크로스보더 송금 및 통합 현금 관리 지원.", biz3Title: "투자 및 자산 관리", biz3Desc: "독보적인 투자 전문 지식과 글로벌 싱크탱크를 결합하여 맞춤형 포트폴리오 운용.", biz3S1T: "멀티 부티크 모델", biz3S1D: "멜론, 드레이퍼스 등 부문별 세계 최고 수준의 전문 투자 기관 보유.", fMeta: "미래 청사진", fTitle: "2026년 미래 계획 및 인공지능 전략", fC1T: "AI 기반의 '슈퍼 촉매제'", fC1S1T: "예측적 거래 분석", fC1S1D: "특허 AI 기술을 활용하여 결제 실패 위험을 사전에 예측하고 능동적으로 차단.", fC1S2T: "효율성 혁명", fC1S2D: "인공지능 도입을 통해 중기 자산 서비스 부문 세전 이익률 30% 달성 목표.", fC2T: "디지털 자산 및 토큰화", fC2S1T: "실물 자산 (RWA) 토큰화", fC2S1D: "전통 자산의 토큰화를 선도하여 글로벌 시장의 유동성과 결제 효율성을 극대화.", fC2S2T: "24/7/365 전천후 운영 구조", fC2S2D: "시장의 마감 개념을 없애고 글로벌 자산과 담보의 실시간 무중단 이동 실현.", fC3T: "미국채 집중 청산 및 T+1 결제 대응", fC3S1T: "일중 유동성 관리 강화", fC3S1D: "결제 주기 단축에 맞추어 담보 이동성을 높이고 안정적인 자금 흐름 지원.", fC4T: "수수료 주도형 고품질 성장", fC4S1T: "강력한 주주 환원", fC4S1D: "낮은 SCB 요건을 기반으로 지속적인 배당 인상 및 자사주 매입을 통한 가치 제고.", finalVision: "「해밀턴의 철저한 리스크 관리와 AI·블록체인 기술을 융합하여 미래 금융을 선도합니다.」" },
+            ru: { navHome: "Главная", navHistory: "История", navBusiness: "Бизнес", navFuture: "Стратегия", currentLangName: "Русский", heroTitle: "Добро пожаловать в BNY Mellon", heroDesc: "Хранитель и двигатель глобальной финансовой инфраструктуры. Банк для банков.", stat1Desc: "Активы под хранением и управлением", stat2Desc: "Года безупречного финансового доверия", stat3Desc: "Крупнейший кастодиальный банк мира", profName: "Connor Tadhg Patel", profTitle: "Региональный менеджер по Мексике и Южной Америке", hMeta: "Наследие", hTitle: "Наше Происхождение", hist1T: "Корни Отцов-Основателей", hist1D: "Основан в 1784 году Александром Гамильтоном. Старейший банк в Соединенных Штатах.", hist2T: "Великое Слияние", hist2D: "Создан в 2007 году путем слияния старейшего The Bank of New York и Mellon Financial.", hist3T: "Вековая Устойчивость", hist3D: "Пройдя через все исторические кризисы, мы стали убежищем для суверенных фондов.", bMeta: "Бизнес", bTitle: "Три Столпа Нашей Деятельности", biz1Title: "Депозитарное Обслуживание и Кастоди", biz1Desc: "Обеспечение безопасности и учета институциональных активов мирового масштаба.", biz1S1T: "Глобальный Кастоди", biz1S1D: "Автоматизированные расчеты и учет трансграничных ценных бумаг.", biz1S2T: "Управление Коллатералом", biz1S2D: "Ключевая роль в обеспечении ликвидности рынка гособлигаций США.", biz2Title: "Рыночные и Трастовые Услуги", biz2Desc: "Оптимизация движения капитала в глобальной экосистеме.", biz2S1T: "Pershing", biz2S1D: "Передовая клиринговая платформа для брокеров и консультантов.", biz2S2T: "Казначейские Услуги", biz2S2D: "Крупные международные платежи и управление ликвидностью корпораций.", biz3Title: "Управление Инвестициями и Капиталом", biz3Desc: "Институциональные инвестиционные решения от ведущих экспертов.", biz3S1T: "Модель Мульти-Бутик", biz3S1D: "Доступ к специализированным управляющим, таким как Mellon и Dreyfus.", fMeta: "Будущее", fTitle: "Стратегический Фокус и Инновации (2026)", fC1T: "ИИ как Суперкатализатор", fC1S1T: "Предиктивная Аналитика Сделок", fC1S1D: "Упреждающее предотвращение сбоев в расчетах до их возникновения.", fC1S2T: "Революция Эффективности", fC1S2D: "Целевая маржа в 30% благодаря глубокой автоматизации процессов.", fC2T: "Цифровые Активы и Токенизация", fC2S1T: "Токенизация Реальных Активов (RWA)", fC2S1D: "Трансформация традиционных активов для повышения рыночной ликвидности.", fC2S2T: "Операции 24/7/365", fC2S2D: "Инфраструктура без закрытия рынков для мгновенного перемещения активов.", fC3T: "Центральный Клиринг и T+1", fC3S1T: "Внутридневная Ликвидность", fC3S1D: "Поддержка клиентов в условиях ускоренных циклов расчетов.", fC4T: "Рост на Основе Комиссионных", fC4S1T: "Высокий Возврат Капитала", fC4S1D: "Увеличение дивидендов, подкрепленное прочной структурой баланса.", finalVision: "'Мы сочетаем историческое доверие Гамильтона с технологиями завтрашнего дня.'" },
+            ar: { navHome: "الرئيسية", navHistory: "تاريخنا", navBusiness: "أعمالنا", navFuture: "الاستراتيجية", currentLangName: "العربية", heroTitle: "مرحباً بكم في بي ني واي ميلون", heroDesc: "حارس ومحرك البنية التحتية المالية العالمية. بنك البنوك وعصب المؤسسات.", stat1Desc: "الأصول تحت الحفظ والإدارة", stat2Desc: "عاماً من الثقة المالية المطلقة", stat3Desc: "أكبر بنك حفظ أمين في العالم", profName: "Connor Tadhg Patel", profTitle: "المدير الإقليمي للمكسيك وأمريكا الجنوبية", hMeta: "الأصالة", hTitle: "نشأتنا وخلفيتنا التاريخية", hist1T: "سلالة الآباء المؤسسين", hist1D: "أسسه ألكسندر هاملتون عام 1784، أول وزير خزانة لأمريكا. نحن أقدم بنك في الولايات المتحدة.", hist2T: "الاندماج العملاق", hist2D: "تأسس الكيان الحديث عام 2007 عبر اندماج بنك نيويورك وميلون المالية.", hist3T: "مرونة عابرة للقرون", hist3D: "صمدنا أمام كل الأزمات العالمية لنكون الملاذ الآمن لصناديق الثروة السيادية.", bMeta: "الأعمال", bTitle: "ركائزنا الاستراتيجية الثلاث", biz1Title: "الخدمات الورقية والحفظ الأمين العالمي", biz1Desc: "حفظ ومحاسبة الأصول السيادية والمؤسسية بمليارات الدولارات.", biz1S1T: "الحفظ الأمين العالمي", biz1S1D: "تسوية ومقاصة الأصول عبر الحدود بأعلى مستويات الأتمتة.", biz1S2T: "إدارة الضمانات", biz1S2D: "دور محوري في سوق سندات الخزانة الأمريكية لضمان تدفق السيولة.", biz2Title: "خدمات الأسواق والثروات", biz2Desc: "تسريع حركة الأموال وضمان كفاءة التدفقات النقدية عالمياً.", biz2S1T: "بيرشينج للمقاصة", biz2S1D: "منصة المقاصة الأولى التي تقدم الدعم التقني لآلاف المستشارين الماليين.", biz2S2T: "الخدمات الخزائنية", biz2S2D: "تمكين الشركات العالمية من إجراء المدفوعات الضخمة وإدارة النقد.", biz3Title: "إدارة الاستثمارات والثروات", biz3Desc: "إدارة المحافظ الاستثمارية الكبرى عبر حلول مبتكرة ومخصصة.", biz3S1T: "نموذج البوتيكات المتعددة", biz3S1D: "تضم رواد الاستثمار مثل ميلون ودريفوس لتقديم استراتيجيات مخصصة.", fMeta: "المستقبل", fTitle: "الخطط المستقبلية والتركيز على الذكاء الاصطناعي (2026)", fC1T: "الذكاء الاصطناعي كمحفز فائق", fC1S1T: "التحليلات التنبؤية للتجارة", fC1S1D: "التنبؤ بفشل التسويات قبل حدوثها والتدخل الاستباقي لخفض المخاطر.", fC1S2T: "ثورة الكفاءة", fC1S2D: "استهداف هامش ربح 30% في قطاع خدمات الأوراق المالية عبر الأتمتة الذكية.", fC2T: "الأصول الرقمية والترميز", fC2S1T: "ترميز أصول العالم الحقيقي (RWA)", fC2S1D: "تحويل الأصول التقليدية إلى رموز رقمية لتعزيز السيولة وسرعة التسوية.", fC2S2T: "عمليات على مدار الساعة 24/7/365", fC2S2D: "إعادة بناء البنية التحتية لدعم حركة الأصول والضمانات دون إغلاق الأسواق.", fC3T: "المقاصة المركزية وتمديد T+1", fC3S1T: "إدارة السيولة اليومية", fC3S1D: "مساعدة العملاء في مواجهة متطلبات المقاصة الصارمة ودورات التسوية القصيرة.", fC4T: "النمو المدفوع بالرسوم العالية", fC4S1T: "عائدات رأس المال المتميزة", fC4S1D: "زيادة توزيعات الأرباح المستدامة بدعم من قاعدة رأس مال قوية ومتينة.", finalVision: "'نحن نجمع بين ثقة هاملتون التاريخية وتكنولوجيا الذكاء الاصطناعي لقيادة مستقبل المال.'" },
+            zh_hk: {
+                navHome: "首頁", navHistory: "歷史起源", navBusiness: "核心主營", navFuture: "未來戰略", currentLangName: "繁體中文 (香港)",
+                heroTitle: "您好！歡迎來到紐約梅隆銀行<br><span>全球金融基礎設施的守護者與驅動者</span>",
+                heroDesc: "在金融界，大家常把我稱作「銀行的銀行」或「機構的隱形脊梁」。我不是那種開在街頭巷尾、辦理個人房貸或信用卡的傳統零售銀行；我是全球金融基礎設施的守護者和驅動者。",
+                stat1Desc: "管理、移動與保護資產規模", stat2Desc: "橫跨世紀的信用沉澱 (年)", stat3Desc: "全球最大資管與託管機構之一",
+                profName: "Connor Tadhg Patel", profTitle: "紐約梅隆銀行 墨西哥及南美洲區域經理",
+                hMeta: "Heritage", hTitle: "我的誕生與歷史背景",
+                hist1T: "開國元勳的血統", hist1D: "由美國開國元勳、第一任財政部長亞歷山大·漢密爾頓親自創立。我是美國歷史最悠久的銀行。",
+                hist2T: "雙雄強強合併", hist2D: "現代的我，是由紐約銀行與梅隆金融公司在 2007 年強強聯手合併而成的時代巨擘。",
+                hist3T: "跨越世紀的韌性", hist3D: "從獨立戰爭、大蕭條到全球金融海嘯，我始終保持堅如磐石的信用，成為全球主權基金與頂級機構最信賴的避風港。",
+                bMeta: "Core Business", bTitle: "我的主营业务与三大支柱",
+                biz1Title: "資產服務與全球託管", biz1Desc: "當全球大型基金、養老金、政府機構購買千億資產時，我為其提供足夠安全與技術強大的底層支持。",
+                biz1S1T: "全球託管", biz1S1D: "提供高度自動化的清算、結算、資產保管和會計服務。",
+                biz1S2T: "三方回購與抵押品管理", biz1S2D: "在美國國債和回購市場中承擔核心第三方清算角色，保障市場流動性安全傳導。",
+                biz2Title: "市場與財富服務", biz2Desc: "專注於全球金融體系中資金的高效周轉，保障交易生態全天候順暢無阻。",
+                biz2S1T: "Pershing 清算業務", biz2S1D: "全美頂尖的財富管理外包平台，為數千家獨立理財顧問、券商提供底層清算。",
+                biz2S2T: "財政與庫務服務", biz2S2D: "助力全球機構開展高效的跨境大額付款、全方位現金管理及外匯清結算。",
+                biz3Title: "投資與財富管理", biz3Desc: "不僅保管資產，更通過卓越的智庫團隊與前沿策略，協助全球精英機構打理財富。",
+                biz3S1T: "多精品店模式", biz3S1D: "旗下匯聚 Mellon、Dreyfus 等垂直頂尖投研機構，提供涵蓋主動權益、指數化及固收的定制方案。",
+                fMeta: "Future Blueprint", fTitle: "未來計劃與戰略重點 (2026)",
+                fC1T: "AI 驅動的「超級催化劑」", fC1S1T: "預測性貿易分析", fC1S1D: "借助專利 AI 技術，在結算失敗發生前提前預測高風險交易，大幅降低系統操作風險。",
+                fC1S2T: "效率革命", fC1S2D: "通過底層 AI 優化流程，目標在中期內將證券服務板塊的稅前利潤率提升至 30%。",
+                fC2T: "數位化轉型與代幣化", fC2S1T: "真實世界資產 (RWA) 代幣化", fC2S1D: "探索將傳統資產與負債進行代幣化，提高全球市場流動性與即時清算效率。",
+                fC2S2T: "7x24x365 全天候運營", fC2S2D: "重構底層架構，支持零閉市、無縫即時的跨國資產流動與全球抵押品高效調撥。",
+                fC3T: "國債集中清算與 T+1 延展", fC3S1T: "日內流動性強化", fC3S1D: "積極應對美債集中清算法規要求，協助全球客戶提高抵押品的可移動性與日內流轉速度。",
+                fC4T: "高品質 Fee-Driven 增長", fC4S1T: "資本回報躍升", fC4S1D: "得益於低 SCB 要求，持續推進極具競爭力的紅利分派計劃並深度聚焦費率驅動型的高粘性穩健收入。",
+                finalVision: "「我不僅是一家歷經 240 多年風雨的華尔街老牌銀行，更是一家偽裝成銀行的『全球金融科技基礎設施巨頭』。我的未來，是左手握著亞歷山大·汉密尔顿傳承下來的頂級風控與信任，右手緊握 AI 與區塊鏈技術，繼續在全球金融生態中扮演那塊最不可或缺的壓艙石。」"
+            }
+        };
+
+        // 核心渲染引擎函数
+        function changeLang(langKey) {
+            const data = i18nData[langKey];
+            if (!data) return;
+
+            // 更改导航
+            document.getElementById('nav-home').innerText = data.navHome;
+            document.getElementById('nav-history').innerText = data.navHistory;
+            document.getElementById('nav-business').innerText = data.navBusiness;
+            document.getElementById('nav-future').innerText = data.navFuture;
+            document.getElementById('current-lang').innerText = data.currentLangName;
+
+            // 更改 Hero
+            document.getElementById('hero-title').innerHTML = data.heroTitle;
+            document.getElementById('hero-desc').innerText = data.heroDesc;
+            document.getElementById('stat-1-desc').innerText = data.stat1Desc;
+            document.getElementById('stat-2-desc').innerText = data.stat2Desc;
+            document.getElementById('stat-3-desc').innerText = data.stat3Desc;
+
+            // 更改高管区域经理卡片文案
+            document.getElementById('prof-name').innerText = data.profName;
+            document.getElementById('prof-title').innerText = data.profTitle;
+
+            // 历史部分
+            document.getElementById('h-meta').innerText = data.hMeta;
+            document.getElementById('h-title').innerText = data.hTitle;
+            document.getElementById('hist-1-t').innerText = data.hist1T;
+            document.getElementById('hist-1-d').innerText = data.hist1D;
+            document.getElementById('hist-2-t').innerText = data.hist2T;
+            document.getElementById('hist-2-d').innerText = data.hist2D;
+            document.getElementById('hist-3-t').innerText = data.hist3T;
+            document.getElementById('hist-3-d').innerText = data.hist3D;
+
+            // 主营
+            document.getElementById('b-meta').innerText = data.bMeta;
+            document.getElementById('b-title').innerText = data.bTitle;
+            document.getElementById('biz-1-title').innerText = data.biz1Title;
+            document.getElementById('biz-1-desc').innerText = data.biz1Desc;
+            document.getElementById('biz-1-s1-t').innerText = data.biz1S1T;
+            document.getElementById('biz-1-s1-d').innerText = data.biz1S1D;
+            document.getElementById('biz-1-s2-t').innerText = data.biz1S2T;
+            document.getElementById('biz-1-s2-d').innerText = data.biz1S2D;
+
+            document.getElementById('biz-2-title').innerText = data.biz2Title;
+            document.getElementById('biz-2-desc').innerText = data.biz2Desc;
+            document.getElementById('biz-2-s1-t').innerText = data.biz2S1T;
+            document.getElementById('biz-2-s1-d').innerText = data.biz2S1D;
+            document.getElementById('biz-2-s2-t').innerText = data.biz2S2T;
+            document.getElementById('biz-2-s2-d').innerText = data.biz2S2D;
+
+            document.getElementById('biz-3-title').innerText = data.biz3Title;
+            document.getElementById('biz-3-desc').innerText = data.biz3Desc;
+            document.getElementById('biz-3-s1-t').innerText = data.biz3S1T;
+            document.getElementById('biz-3-s1-d').innerText = data.biz3S1D;
+
+            // 未来
+            document.getElementById('f-meta').innerText = data.fMeta;
+            document.getElementById('f-title').innerText = data.fTitle;
+            document.getElementById('f-c1-t').innerText = data.fC1T;
+            document.getElementById('f-c1-s1-t').innerText = data.fC1S1T;
+            document.getElementById('f-c1-s1-d').innerText = data.fC1S1D;
+            document.getElementById('f-c1-s2-t').innerText = data.fC1S2T;
+            document.getElementById('f-c1-s2-d').innerText = data.fC1S2D;
+
+            document.getElementById('f-c2-t').innerText = data.fC2T;
+            document.getElementById('f-c2-s1-t').innerText = data.fC2S1T;
+            document.getElementById('f-c2-s1-d').innerText = data.fC2S1D;
+            document.getElementById('f-c2-s2-t').innerText = data.fC2S2T;
+            document.getElementById('f-c2-s2-d').innerText = data.fC2S2D;
+
+            document.getElementById('f-c3-t').innerText = data.fC3T;
+            document.getElementById('f-c3-s1-t').innerText = data.fC3S1T;
+            document.getElementById('f-c3-s1-d').innerText = data.fC3S1D;
+
+            document.getElementById('f-c4-t').innerText = data.fC4T;
+            document.getElementById('f-c4-s1-t').innerText = data.fC4S1T;
+            document.getElementById('f-c4-s1-d').innerText = data.fC4S1D;
+
+            // 宏观愿景
+            document.getElementById('final-vision').innerText = data.finalVision;
+
+            // 处理阿拉伯语 RTL 布局
+            if(langKey === 'ar') {
+                document.body.style.direction = 'rtl';
+                document.body.style.textAlign = 'right';
+            } else {
+                document.body.style.direction = 'ltr';
+                document.body.style.textAlign = 'left';
+            }
+        }
+
+        // 下拉菜单交互
+        function toggleLangDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        window.onclick = function() {
+            document.getElementById('langDropdown').classList.remove('show');
+        }
+
+        // 滚动头部收缩特效
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ================= Canvas 顶奢动态资产流向粒子背景 =================
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particles = [];
+        const particleCount = 65;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.5 + 0.2; 
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y > canvas.height || this.x < 0 || this.x > canvas.width) {
+                    this.reset();
+                    this.y = 0;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#D4AF37";
+                ctx.fillStyle = Math.random() > 0.7 ? '#00F2FE' : '#D4AF37';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#040A17');
+            gradient.addColorStop(1, '#02050B');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
